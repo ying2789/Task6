@@ -1,21 +1,20 @@
-const canvas = document.getElementById("renderCanvas");
-const engine = new BABYLON.Engine(canvas, true);
+var createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
 
-const createScene = () => {
-  const scene = new BABYLON.Scene(engine);
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
 
-  // Camera
-  const camera = new BABYLON.ArcRotateCamera("camera", 
-      Math.PI / 2, Math.PI / 3, 30, BABYLON.Vector3.Zero(), scene);
-  camera.attachControl(canvas, true);
+    // This targets the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
 
-  // Light
-  const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+…    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
 
-  return scene;
+    // Move the sphere upward 1/2 its height
+    sphere.position.y = 1;
+
+    // Our built-in 'ground' shape.
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+
+    return scene;
 };
-
-const scene = createScene();
-engine.runRenderLoop(() => scene.render());
-
-window.addEventListener('resize', () => engine.resize());
